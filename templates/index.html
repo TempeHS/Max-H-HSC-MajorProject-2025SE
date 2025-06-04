@@ -1,0 +1,10 @@
+{% extends 'layout.html' %} {% block content %}
+<h1>Welcome to WeatherSpoon</h1>
+<p>
+  This is a recipe app that provides weather-based recipe suggestions. Please
+  log in or sign up to get started.
+</p>
+<a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
+<a href="{{ url_for('signup') }}" class="btn btn-success">Sign Up</a>
+<a href="{{ url_for('dashboard') }}" class="'btn btn-success">Dashoard</a>
+{% endblock %}
