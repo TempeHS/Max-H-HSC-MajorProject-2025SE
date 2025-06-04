@@ -1,0 +1,7 @@
+{% extends "layout.html" %} {% block content %}
+<h2>Enable Two-Factor Authentication</h2>
+<form method="post">
+  {{ form.hidden_tag() }}
+  <button type="submit" class="btn btn-warning">Generate 2FA QR Code</button>
+</form>
+{% endblock %}

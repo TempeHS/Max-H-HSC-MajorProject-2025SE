@@ -1,0 +1,27 @@
+{% extends "layout.html" %} {% block content %}
+<div class="container">
+  <h1 class="dashboard-title">User Dashboard</h1>
+  <p>Welcome, {{ username }}!</p>
+  <h2>Your Information</h2>
+  <ul>
+    <li><strong>Username:</strong> {{ username }}</li>
+    <li><strong>Location:</strong> {{ location }}</li>
+  </ul>
+  <h2>Actions</h2>
+  {% if not session.get('twoFA_enabled') %}
+  <form action="{{ url_for('enable_2fa') }}" method="post">
+    <button type="submit" class="btn btn-warning">Enable 2FA</button>
+  </form>
+  {% else %}
+  <p>Two-factor authentication is enabled.</p>
+  {% endif %}
+  <ul>
+    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+    <li>
+      <a href="{{ url_for('recipes') }}"
+        >Get Weather-Based Recipe Suggestions</a
+      >
+    </li>
+  </ul>
+</div>
+{% endblock %}

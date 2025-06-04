@@ -1,0 +1,9 @@
+{% extends "layout.html" %} {% block content %}
+<h2>Scan this QR code with your authenticator app</h2>
+<img src="data:image/png;base64,{{ qr_img }}" alt="2FA QR Code" />
+<form method="post">
+  {{ form.hidden_tag() }} {{ form.token.label }} {{ form.token(size=6,
+  maxlength=6, class="form-control") }} {{ form.submit(class="btn btn-success")
+  }}
+</form>
+{% endblock %}
