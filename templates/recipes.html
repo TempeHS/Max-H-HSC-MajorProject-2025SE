@@ -1,20 +1,28 @@
 {% extends "layout.html" %} {% block content %}
-<h2>Get Weather-Based Recipe Suggestions</h2>
+<h2>Recipe Suggestions</h2>
 <form method="post">
   {{ form.hidden_tag() }} {{ form.dietary.label }} {{
   form.dietary(class="form-control") }} {{ form.submit(class="btn btn-primary")
   }}
 </form>
-{% if weather %}
-<h3>
-  Current Weather: {{ weather.weather[0].description }}, {{ weather.main.temp
-  }}°C
-</h3>
-{% endif %} {% if recipes %}
-<h3>Recipe Suggestions:</h3>
-<ul>
+<div class="row mt-4">
   {% for recipe in recipes %}
-  <li>{{ recipe.title }}</li>
+  <div class="col-md-4 mb-4">
+    <div class="card h-100">
+      <a href="{{ url_for('recipe_details', recipe_id=recipe['id']) }}">
+        <img
+          src="{{ recipe['image'] }}"
+          class="card-img-top"
+          alt="{{ recipe['title'] }}"
+        />
+      </a>
+      <div class="card-body">
+        <h5 class="card-title">{{ recipe['title'] }}</h5>
+        <p>Cook time: {{ recipe['readyInMinutes'] }} min</p>
+        <p>Difficulty: {{ recipe['difficulty'] or 'N/A' }}</p>
+      </div>
+    </div>
+  </div>
   {% endfor %}
-</ul>
-{% endif %} {% endblock %}
+</div>
+{% endblock %}
