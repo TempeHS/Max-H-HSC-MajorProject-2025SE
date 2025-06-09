@@ -8,3 +8,16 @@ def get_weather(location):
         return response.json()
     else:
         return None
+    
+
+def get_weather_based_dish(temp, weather_desc):
+    if temp is None:
+        return "Weather data unavailable."
+    if temp < 10:
+        return "It's cold! Warm soups, stews, and casseroles are perfect."
+    elif temp > 25:
+        return "It's hot! Try salads, cold dishes, or grilled foods."
+    elif "rain" in weather_desc.lower():
+        return "Rainy weather calls for comfort food like pasta or curry."
+    else:
+        return "Mild weather is great for any dish—try something seasonal!"

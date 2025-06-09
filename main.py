@@ -17,8 +17,8 @@ from forms import SignupForm, LoginForm, TwoFactorForm, RecipeSuggestionForm
 from form_manager import manage_signup, manage_login, manage_two_factor
 from secure_session import get_secure_session, set_secure_session
 from twofa import generate_totp_secret, get_totp_uri, generate_qr_code, verify_totp
-from weather import get_weather
-from recipes import get_recipes, get_weather_based_query
+from weather import get_weather, get_weather_based_dish
+from recipes import get_recipes, get_weather_based_query, get_recipe_details
 
 app_log = logging.getLogger(__name__)
 logging.basicConfig(
@@ -112,7 +112,20 @@ def dashboard():
     user = dbHandler.getUserByUsername(session["username"])
     if user.get("twoFA_enabled") and not session.get("twoFA_verified"):
         return redirect(url_for("verify_2fa_setup"))
-    return render_template("dashboard.html", username=user["username"], location=user["location"], two_factor_enabled=user["twoFA_enabled"])
+    weather = get_weather(user["location"])
+    weather_desc = weather["weather"][0]["description"].capitalize() if weather else "Unknown"
+    temp = weather["main"]["temp"] if weather else None
+    dish_suggestion = get_weather_based_dish(temp, weather_desc) if weather else ""
+    return render_template(
+        "dashboard.html",
+        username=user["username"],
+        location=user["location"],
+        two_factor_enabled=user["twoFA_enabled"],
+        weather=weather,
+        weather_desc=weather_desc,
+        temp=temp,
+        dish_suggestion=dish_suggestion
+    )
 
 
 @app.route("/privacy.html", methods=["GET"])
@@ -184,6 +197,14 @@ def recipes():
             query = get_weather_based_query(temp)
         recipes = get_recipes(query, dietary)
     return render_template("recipes.html", form=form, recipes=recipes, weather=weather, query=query)
+
+@app.route("/recipe_details/<int:recipe_id>")
+def recipe_details(recipe_id):
+    recipe = get_recipe_details(recipe_id)
+    if not recipe:
+        flash("Recipe not found.", "danger")
+        return redirect(url_for("recipes"))
+    return render_template("recipe_detail.html", recipe=recipe)
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)
