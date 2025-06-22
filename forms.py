@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, Email, Length, EqualTo, Regexp, URL, ValidationError
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField, IntegerField
+from wtforms.validators import DataRequired, Email, Length, EqualTo, Regexp, URL, ValidationError, Optional
 
 
 def validate_password(form, field):
@@ -51,3 +51,17 @@ class TwoFactorForm(FlaskForm):
 class RecipeSuggestionForm(FlaskForm):
     dietary = StringField('Dietary Requirements (comma separated)')
     submit = SubmitField('Get Recipe Suggestions')
+
+class EditProfileForm(FlaskForm):
+    email = StringField('Email', validators=[Optional(), Email(), Length(max=120)])
+    password = PasswordField('New Password', validators=[Optional(), Length(min=6)])
+    location = StringField('Location', validators=[Optional(), Length(max=100)])
+    submit = SubmitField('Update Profile')
+
+class SaveRecipeForm(FlaskForm):
+    pass
+
+class ReviewForm(FlaskForm):
+    review = TextAreaField('Your Review', validators=[DataRequired(), Length(max=500)])
+    rating = IntegerField('Rating (1-5)', validators=[DataRequired()])
+    submit = SubmitField('Post Review')

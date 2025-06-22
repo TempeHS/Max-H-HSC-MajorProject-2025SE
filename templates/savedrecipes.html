@@ -1,0 +1,32 @@
+{% extends "layout.html" %} {% block content %}
+<div class="container">
+  <h2>Your Saved Recipes</h2>
+  {% if recipes %}
+  <div class="row">
+    {% for recipe in recipes %}
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <a href="{{ url_for('recipe_details', recipe_id=recipe.id) }}">
+          <img
+            src="{{ recipe.image }}"
+            class="card-img-top"
+            alt="{{ recipe.title }}"
+          />
+        </a>
+        <div class="card-body">
+          <h5 class="card-title">{{ recipe.title }}</h5>
+          <a
+            href="{{ url_for('recipe_details', recipe_id=recipe.id) }}"
+            class="btn btn-primary"
+            >View</a
+          >
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p>You have no saved recipes yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

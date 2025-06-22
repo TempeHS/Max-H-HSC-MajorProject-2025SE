@@ -1,21 +1,250 @@
+:root {
+  --primary: #0077b6;
+  --secondary: #90e0ef;
+  --accent: #00b4d8;
+  --background: #f8f9fa;
+  --text: #222;
+  --success: #43aa8b;
+  --danger: #f94144;
+  --card-bg: #e9f6fb;
+  --shadow: 0 4px 24px rgba(0, 119, 182, 0.08);
+}
+
 * {
   box-sizing: border-box;
 }
+
 body {
-  font-family: Arial, sans-serif;
-  line-height: 1.6;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: var(--background);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+  font-family: "Segoe UI", Arial, sans-serif;
 }
+
 .container {
-  width: 80%;
+  width: 95%;
+  max-width: 900px;
+  margin: 40px auto 0 auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 2.5rem 2rem;
+}
+
+h1,
+h2,
+h3 {
+  color: var(--primary);
+  margin-top: 0;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+a:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.btn,
+.btn-primary,
+.btn-success {
+  display: inline-block;
+  padding: 0.7em 2em;
+  border-radius: 8px;
+  border: none;
+  font-size: 1.1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  margin: 0.5em 0.2em;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 119, 182, 0.07);
+}
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+}
+.btn-primary:hover {
+  background: var(--accent);
+  color: #fff;
+}
+.btn-success {
+  background: var(--success);
+  color: #fff;
+}
+.btn-success:hover {
+  background: #21867a;
+  color: #fff;
+}
+
+.card {
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  background: #fff;
+  padding: 1.5rem 1rem;
+  margin-bottom: 2rem;
+  transition: transform 0.15s;
+}
+.card:hover {
+  transform: translateY(-4px) scale(1.02);
+}
+
+.card-img-top {
+  width: 100%;
+  border-radius: 10px 10px 0 0;
+  object-fit: cover;
+  max-height: 180px;
+}
+
+.card-title {
+  color: var(--primary);
+  font-size: 1.2em;
+  font-weight: 600;
+  margin: 0.5em 0;
+}
+
+.login-container,
+.form-title {
+  text-align: center;
+}
+
+.login-form,
+.signup-form {
+  max-width: 400px;
   margin: 0 auto;
+  background: #f1f8fc;
+  padding: 2em 1.5em;
+  border-radius: 12px;
+  box-shadow: 0 1px 8px rgba(0, 119, 182, 0.09);
 }
-.row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
+
+.input__wrapper {
+  margin-bottom: 1.2em;
+  text-align: left;
 }
+
+.input__field,
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+  width: 100%;
+  padding: 0.7em;
+  border: 1px solid #bcdff1;
+  border-radius: 6px;
+  font-size: 1em;
+  background: #fff;
+  transition: border 0.2s;
+}
+.input__field:focus,
+input:focus {
+  border-color: var(--primary);
+  outline: none;
+}
+
+.flash-messages {
+  margin-top: 1em;
+  text-align: center;
+}
+.flash-message {
+  padding: 0.7em 1em;
+  border-radius: 5px;
+  margin-bottom: 0.5em;
+  font-weight: 500;
+}
+.flash-message.success {
+  background: #d4f3e2;
+  color: var(--success);
+}
+.flash-message.error {
+  background: #ffe0e0;
+  color: var(--danger);
+}
+
+.dashboard-title {
+  font-size: 2.2em;
+  color: var(--primary);
+  margin-bottom: 0.5em;
+}
+
+ul {
+  padding-left: 1.2em;
+}
+
 .highlight {
-  background-color: yellow;
+  background: var(--secondary);
   border-radius: 20px;
-  border: 1px yellow solid;
+  border: 1px solid var(--accent);
+  padding: 0.2em 0.7em;
+  color: var(--primary);
+}
+
+.form-other {
+  font-size: 1em;
+  color: #555;
+  margin-top: 1em;
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+  .container {
+    padding: 1.5em 0.7em;
+    width: 99%;
+  }
+  .card {
+    padding: 1em 0.5em;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 1em 0.2em;
+    width: 100%;
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .login-form,
+  .signup-form {
+    padding: 1em 0.5em;
+  }
+  h1,
+  h2 {
+    font-size: 1.3em;
+  }
+  .btn,
+  .btn-primary,
+  .btn-success {
+    width: 100%;
+    font-size: 1em;
+    padding: 0.7em 0;
+    background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+    border: none;
+  }
+  .btn-success:hover {
+    background: linear-gradient(90deg, #38f9d7 0%, #43e97b 100%);
+    color: #fff;
+  }
+  .card-img-top {
+    max-height: 120px;
+  }
+  .card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  }
+  .dashboard-title {
+    font-size: 1.5em;
+  }
+  header img {
+    display: block;
+    margin: 20px 0 0 20px;
+  }
 }

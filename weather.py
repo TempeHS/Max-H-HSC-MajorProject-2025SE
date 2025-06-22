@@ -1,4 +1,5 @@
 import requests
+
 OPENWEATHER_API_KEY = "1c7653cfb4f11ede9ba7fa6bd8e84769"
 
 def get_weather(location):
@@ -9,7 +10,10 @@ def get_weather(location):
     else:
         return None
     
+<<<<<<< HEAD
 
+=======
+>>>>>>> f017e3d (sprint 0.2 completed)
 def get_weather_based_dish(temp, weather_desc):
     if temp is None:
         return "Weather data unavailable."

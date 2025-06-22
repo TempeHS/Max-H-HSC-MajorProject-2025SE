@@ -21,3 +21,6 @@ def signup_user(username, password, email=None, location=None):
     except Exception as e:
         logging.error(f"Error during signup: {e}")
         return {"message": "Internal server error"}, 500
+    
+
+    
