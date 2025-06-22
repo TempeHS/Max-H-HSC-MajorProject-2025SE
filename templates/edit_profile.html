@@ -1,0 +1,27 @@
+{% extends "layout.html" %} {% block content %}
+<div class="container">
+  <h2>Edit Profile</h2>
+  <form method="post">
+    {{ form.hidden_tag() }}
+    <div class="input__wrapper">
+      {{ form.email.label }} {{ form.email(class="input__field") }}
+    </div>
+    <div class="input__wrapper">
+      {{ form.password.label }} {{ form.password(class="input__field") }}
+      <small>(Leave blank to keep current password)</small>
+    </div>
+    <div class="input__wrapper">
+      {{ form.location.label }} {{ form.location(class="input__field") }}
+    </div>
+    <div class="input__wrapper">{{ form.submit(class="btn btn-primary") }}</div>
+  </form>
+  {% with messages = get_flashed_messages(with_categories=true) %} {% if
+  messages %}
+  <div class="flash-messages mt-3">
+    {% for category, message in messages %}
+    <p class="flash-message {{ category }}">{{ message }}</p>
+    {% endfor %}
+  </div>
+  {% endif %} {% endwith %}
+</div>
+{% endblock %}

@@ -8,6 +8,25 @@
     <li><strong>Location:</strong> {{ location }}</li>
   </ul>
   <h2>Current Weather</h2>
+<<<<<<< HEAD
+=======
+  <p>
+    {% if weather_desc %}
+      {% if "rain" in weather_desc.lower() %}
+        🌧️
+      {% elif "cloud" in weather_desc.lower() %}
+        ☁️
+      {% elif "sun" in weather_desc.lower() %}
+        ☀️
+      {% elif "snow" in weather_desc.lower() %}
+        ❄️
+      {% else %}
+        🌡️
+      {% endif %}
+      {{ weather_desc }}
+    {% endif %}
+  </p>
+>>>>>>> f017e3d (sprint 0.2 completed)
   {% if weather %}
   <p>
     <strong>Status:</strong> {{ weather_desc }}<br />
@@ -25,6 +44,9 @@
       <a href="{{ url_for('recipes') }}"
         >Get Weather-Based Recipe Suggestions</a
       >
+    </li>
+    <li>
+      <a href="{{ url_for('saved_recipes') }}">My Saved Recipes</a>
     </li>
   </ul>
 </div>
