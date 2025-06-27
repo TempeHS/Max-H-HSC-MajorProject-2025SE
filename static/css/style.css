@@ -248,3 +248,84 @@ ul {
     margin: 20px 0 0 20px;
   }
 }
+.card {
+  background: linear-gradient(135deg, #e9f6fb 60%, #fff 100%);
+  border: none;
+  box-shadow: 0 6px 24px rgba(0, 119, 182, 0.1);
+}
+
+.card-title {
+  font-size: 2em;
+  color: var(--primary);
+  margin-bottom: 0.5em;
+}
+
+.badge.bg-info {
+  background: var(--accent) !important;
+  color: #fff !important;
+}
+
+.badge.bg-secondary {
+  background: var(--primary) !important;
+  color: #fff !important;
+}
+
+.list-group-item {
+  background: #f1f8fc;
+  border: none;
+  border-radius: 8px;
+  margin-bottom: 0.3em;
+}
+
+.review-avatar {
+  width: 36px;
+  height: 36px;
+  background: var(--secondary);
+  color: var(--primary);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-right: 0.7em;
+  font-size: 1.1em;
+}
+
+.review-block {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 1em 1.2em;
+  margin-bottom: 1em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.form-label {
+  font-weight: 600;
+  color: var(--primary);
+}
+.dark-mode {
+  background-color: #181818;
+  color: #f1f1f1;
+}
+.dark-mode input,
+.dark-mode textarea,
+.dark-mode select {
+  background-color: #222;
+  color: #f1f1f1;
+  border: 1px solid #444;
+}
+.dark-mode {
+  background-color: #181818 !important;
+  color: #f1f1f1 !important;
+}
+.dark-mode .container {
+  background-color: #222 !important;
+  color: #f1f1f1 !important;
+}
+.dark-mode input,
+.dark-mode textarea,
+.dark-mode select {
+  background-color: #222 !important;
+  color: #f1f1f1 !important;
+  border: 1px solid #444 !important;
+}

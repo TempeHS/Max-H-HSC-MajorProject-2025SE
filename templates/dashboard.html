@@ -6,28 +6,20 @@
   <ul>
     <li><strong>Username:</strong> {{ username }}</li>
     <li><strong>Location:</strong> {{ location }}</li>
+    <li>
+      <a href="{{ url_for('edit_profile') }}" class="btn btn-warning btn-sm">
+        <i class="fa fa-user-edit"></i> Edit Profile
+      </a>
+    </li>
   </ul>
   <h2>Current Weather</h2>
-<<<<<<< HEAD
-=======
-  <p>
-    {% if weather_desc %}
-      {% if "rain" in weather_desc.lower() %}
-        🌧️
-      {% elif "cloud" in weather_desc.lower() %}
-        ☁️
-      {% elif "sun" in weather_desc.lower() %}
-        ☀️
-      {% elif "snow" in weather_desc.lower() %}
-        ❄️
-      {% else %}
-        🌡️
-      {% endif %}
-      {{ weather_desc }}
-    {% endif %}
-  </p>
->>>>>>> f017e3d (sprint 0.2 completed)
   {% if weather %}
+  <p>
+    {% if weather_desc %} {% if "rain" in weather_desc.lower() %} 🌧️ {% elif
+    "cloud" in weather_desc.lower() %} ☁️ {% elif "sun" in weather_desc.lower()
+    %} ☀️ {% elif "snow" in weather_desc.lower() %} ❄️ {% else %} 🌡️ {% endif %}
+    {{ weather_desc }} {% endif %}
+  </p>
   <p>
     <strong>Status:</strong> {{ weather_desc }}<br />
     <strong>Temperature:</strong> {{ temp }}°C<br />

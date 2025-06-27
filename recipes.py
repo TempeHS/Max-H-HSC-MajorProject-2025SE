@@ -15,7 +15,6 @@ def get_recipes(query, dietary):
     response = requests.get(url, params=params)
     if response.status_code == 200:
         return response.json().get("results", [])
-<<<<<<< HEAD
     else:
         return None
 
@@ -27,19 +26,26 @@ def get_recipe_details(recipe_id):
     response = requests.get(url, params=params)
     if response.status_code == 200:
         return response.json()
-=======
->>>>>>> f017e3d (sprint 0.2 completed)
     else:
         return None
 
-def get_weather_based_query(temp):
+def get_weather_based_query(temp, n=3):
     if temp < 15:
-        options = ["soup", "stew", "curry", "chili", "bake"]
+        options = [
+            "soup", "stew", "curry", "chili", "bake", "lasagna", "shepherd's pie",
+            "ramen", "hotpot", "casserole", "pot roast", "gnocchi", "risotto"
+        ]
     elif temp > 25:
-        options = ["salad", "smoothie", "wrap", "cold pasta", "sandwich"]
+        options = [
+            "salad", "smoothie", "wrap", "cold pasta", "sandwich", "poke bowl",
+            "sushi", "gazpacho", "ceviche", "fruit salad", "spring rolls", "tacos"
+        ]
     else:
-        options = ["pasta", "rice", "stir fry", "grill", "pizza"]
-    return random.choice(options)
+        options = [
+            "pasta", "rice", "stir fry", "grill", "pizza", "quiche", "paella",
+            "burrito", "frittata", "omelette", "shakshuka", "couscous", "noodles"
+        ]
+    return random.sample(options, min(n, len(options)))
 
 def get_recipe_details(recipe_id):
     url = f"https://api.spoonacular.com/recipes/{recipe_id}/information"

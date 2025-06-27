@@ -1,7 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, TextAreaField, IntegerField
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField, IntegerField, SelectField, BooleanField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, Regexp, URL, ValidationError, Optional
-
 
 def validate_password(form, field):
     password = field.data
@@ -40,6 +39,7 @@ class SignupForm(FlaskForm):
     location = StringField('Location', validators=[
         DataRequired(), validate_location
     ])
+    enable_2fa = BooleanField('Enable Two-Factor Authentication', default=False)
     submit = SubmitField('Sign Up')
 
 class TwoFactorForm(FlaskForm):
@@ -49,13 +49,31 @@ class TwoFactorForm(FlaskForm):
     submit = SubmitField('Verify Token')
 
 class RecipeSuggestionForm(FlaskForm):
-    dietary = StringField('Dietary Requirements (comma separated)')
+    dietary = SelectField(
+        'Dietary Requirements',
+        choices=[
+            ('', 'No Requirements'),
+            ('vegetarian', 'Vegetarian'),
+            ('vegan', 'Vegan'),
+            ('gluten free', 'Gluten Free'),
+            ('dairy free', 'Dairy Free'),
+            ('pescatarian', 'Pescatarian'),
+            ('ketogenic', 'Ketogenic'),
+            ('paleo', 'Paleo'),
+            ('lacto-vegetarian', 'Lacto-Vegetarian'),
+            ('ovo-vegetarian', 'Ovo-Vegetarian'),
+            ('whole30', 'Whole30')
+        ],
+        default=''
+    )
     submit = SubmitField('Get Recipe Suggestions')
 
 class EditProfileForm(FlaskForm):
     email = StringField('Email', validators=[Optional(), Email(), Length(max=120)])
     password = PasswordField('New Password', validators=[Optional(), Length(min=6)])
     location = StringField('Location', validators=[Optional(), Length(max=100)])
+    dark_mode = BooleanField('Enable Dark Mode', default=False)
+    enable_2fa = BooleanField('Enable Two-Factor Authentication', default=False)
     submit = SubmitField('Update Profile')
 
 class SaveRecipeForm(FlaskForm):

@@ -12,12 +12,17 @@
 
 ### UI Elements
 
+- Accesible for all levels of technological understanding
+- Shows images for recipes
+- Colour scheme is changeable
+- Accesible for Mobile Use
+
 ### Security/Privacy Features
 
 - Input sanitization (prevent XSS/injection)
 - Passwords hashed and securely stored
-- 2FA Authentication~~
-- ~~Implement a strict content security policy
+- 2FA Authentication
+- Implement a strict content security policy
 - Privacy Handling Policy
 - Secure session management
-- Users given the option to download or delete their data
+- Users sensitive information is encrypted

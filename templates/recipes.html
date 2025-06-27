@@ -1,9 +1,12 @@
 {% extends "layout.html" %} {% block content %}
 <h2>Recipe Suggestions</h2>
 <form method="post">
-  {{ form.hidden_tag() }} {{ form.dietary.label }} {{
-  form.dietary(class="form-control") }} {{ form.submit(class="btn btn-primary")
-  }}
+  {{ form.hidden_tag() }}
+  <div class="mb-3">
+    {{ form.dietary.label(class="form-label") }} {{
+    form.dietary(class="form-select") }}
+  </div>
+  {{ form.submit(class="btn btn-primary") }}
 </form>
 <div class="row mt-4">
   {% for recipe in recipes %}

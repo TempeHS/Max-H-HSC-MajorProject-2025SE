@@ -10,3 +10,4 @@ Pillow
 Werkzeug
 wtforms
 jsonschema
+cryptography
