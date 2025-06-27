@@ -19,6 +19,8 @@
     <div class="input__wrapper">
       {{ form.location.label }} {{ form.location(class="input__field") }}
     </div>
+    <div class="input__wrapper">
+      {{ form.enable_2fa() }} {{ form.enable_2fa.label }}
     </div>
     <div class="input__wrapper">{{ form.submit(class="btn") }}</div>
     <div class="input__wrapper">

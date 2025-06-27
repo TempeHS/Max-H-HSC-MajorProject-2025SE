@@ -13,6 +13,12 @@
     <div class="input__wrapper">
       {{ form.location.label }} {{ form.location(class="input__field") }}
     </div>
+    <div class="input__wrapper">
+      {{ form.dark_mode() }} {{ form.dark_mode.label }}
+    </div>
+    <div class="input__wrapper">
+      {{ form.enable_2fa() }} {{ form.enable_2fa.label }}
+    </div>
     <div class="input__wrapper">{{ form.submit(class="btn btn-primary") }}</div>
   </form>
   {% with messages = get_flashed_messages(with_categories=true) %} {% if

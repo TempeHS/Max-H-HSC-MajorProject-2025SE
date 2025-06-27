@@ -16,10 +16,15 @@ def manage_signup(SignupForm):
         email = SignupForm.email.data
         password = SignupForm.password.data
         location = SignupForm.location.data
+        enable_2fa = SignupForm.enable_2fa.data
         hashed_password = hash_password(password)
-        totp_secret = generate_totp_secret()
+        totp_secret = generate_totp_secret() if enable_2fa else None
         try:
-            insertUser(username, email, hashed_password, totp_secret, location)
+            dbHandler.insertUser(username, email, hashed_password, totp_secret, location, twoFA_enabled=enable_2fa)
+            if enable_2fa:
+                session['pending_totp_secret'] = totp_secret
+                session['username'] = username
+                return redirect(url_for("verify_2fa_setup"))
             flash("Signup successful! Please log in.", "success")
             return redirect(url_for("login"))
         except Exception as e:
@@ -41,21 +46,13 @@ def manage_login(LoginForm):
                 session.permanent = True
                 # Check if user has 2FA enabled
                 user = dbHandler.getUserByUsername(sanitized_data['username'])
-                if user.get("twoFA_enabled"):
-                    return redirect(url_for('enable_2fa'))
-                else:
-                    return redirect(url_for('enable_2fa'))
-            else:
-                flash("Login failed. Please check your credentials.", "danger")
-                logger.info("Login failed for user: %s", sanitized_data['username'])
-        except requests.exceptions.HTTPError as e:
-            flash("Invalid username or password.", "danger")
-            logging.error(f"HTTP error during login: {str(e)}")
-        except requests.exceptions.RequestException as e:
-            flash("An error occurred while processing your request. Please try again later.", "danger")
-            logging.error(f"Request error during login: {str(e)}")
+                session['dark_mode'] = user.get("dark_mode", False)
+                # You may want to redirect here if login is successful
+                return redirect(url_for("dashboard"))
+        except Exception as e:
+            logger.error(f"Login error: {str(e)}")
+            flash("Login failed. Please check your credentials.", "danger")
     return render_template("login.html", form=LoginForm)
-
 
 def manage_two_factor(TwoFactorForm):
     if 'username' not in session:

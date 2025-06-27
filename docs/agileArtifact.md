@@ -2,36 +2,41 @@
 
 ## Sprint backlog list of achievables (annotate changes made during sprint, including data required)
 
-- Session management for logged in users
-- More defensive data handling practices
-- Implement more UX principles within application
-- More features within the app to make it more accessible and enhance the User Experience
+- Improve code optimization
+- Encrypt sensitive information
+- Improve UX further
+- Add a final README.md
+- Conduct thorough tests and evaluation
 
 ## Increment (what must be achieved by the end of the sprint)
 
-- Implement session management through timeouts and logout during page reload
-- SQL database for user's saved recipes
-- Users can leave reviews for others to see
-- Enhanced and responsive frontend for the weatherspoon application
-- Users can edit their profiles
+- Optimize code through caching weather information locally
+- Encrypt TOTP and Email to improve sensitive information security
+- Implement customisation regarding colour schemes
+- Update README.md to include finalised system and user documentation
+- Test using a range of methodologies
 
 ## Sprint Review (Focus on project management)
 
 ### What challenges did you have
 
-- Debugging issues with Jinja2 template syntax, especially with list comprehensions and undefined variables.
-- Ensuring saved recipes and reviews were correctly stored and displayed from the database.
-- Improving the user interface with gradients, icons, and responsive design.
-- Managing session state and user feedback (e.g., flash messages) for a better user experience.
+- Integrating secure encryption for sensitive user data (TOTP secrets and emails) required careful handling to avoid breaking authentication and user flows.
+- Implementing weather data caching involved managing cache invalidation and ensuring up-to-date information without excessive API calls.
+- Ensuring accessibility and usability for all user groups, especially for users with limited technical skills or accessibility needs.
+- Managing and testing 2FA setup and verification across different devices and authenticator apps.
+- Handling edge cases in recipe saving (e.g., preventing duplicate saves) and review submission.
 
 ### What did you do well
 
-- Fixed database logic so users can save recipes and leave reviews, and ensured these are displayed correctly.
-- Improved error handling and user feedback throughout the app.
-- Improved security by restricting access to sensitive features until 2FA is verified.
+-Successfully optimized code by implementing local caching for weather information, reducing API calls and improving response time.
+
+- Enhanced security by encrypting TOTP secrets and user emails in the database.
+- Improved user experience by adding a customizable colour scheme (dark mode) and ensuring the UI is accessible and readable for all ages.
+- Completed and updated the README.md with comprehensive system and user documentation.
+- Thoroughly tested all core functionalities, including dietary filtering, review system, and 2FA, with positive feedback from a diverse group of clientel.
 
 ### What will you do differently next time
 
-- Plan for edge cases and user flows involving authentication and session state earlier in the sprint.
-- Write more unit and integration tests to catch template and backend errors sooner.
-- Allocate more time for testing on different devices and browsers to ensure consistent user experience.
+- Allocate more time for user feedback sessions earlier in the sprint to catch usability issues sooner.
+- Automate more of the testing process, especially for edge cases and security features, to reduce manual testing workload.
+- Improve documentation of code changes and decisions during the sprint for easier tracking and knowledge sharing.

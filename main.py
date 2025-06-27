@@ -132,7 +132,37 @@ def dashboard():
         dish_suggestion=dish_suggestion
     )
 
-
+@app.route("/edit_profile", methods=["GET", "POST"])
+def edit_profile():
+    if "username" not in session:
+        return redirect(url_for("login"))
+    user = dbHandler.getUserByUsername(session["username"])
+    form = EditProfileForm(obj=user)
+    if request.method == "GET":
+        form.email.data = user.get("email")
+        form.location.data = user.get("location")
+        form.dark_mode.data = session.get("dark_mode", False)
+        form.enable_2fa.data = user.get("twoFA_enabled", False)
+    if form.validate_on_submit():
+        email = form.email.data or user.get("email")
+        password = form.password.data
+        location = form.location.data or user.get("location")
+        enable_2fa = form.enable_2fa.data
+        if enable_2fa and not user.get("twoFA_enabled"):
+            totp_secret = generate_totp_secret()
+            session["pending_totp_secret"] = totp_secret
+            return redirect(url_for("verify_2fa_setup"))
+        dbHandler.edit_user(
+            session["username"],
+            email=email,
+            password=password if password else None,
+            location=location,
+            dark_mode=form.dark_mode.data
+        )
+        session["dark_mode"] = form.dark_mode.data
+        flash("Profile updated successfully.", "success")
+        return redirect(url_for("dashboard"))
+    return render_template("edit_profile.html", form=form)
 
 @app.route("/recipe_details/<int:recipe_id>", methods=["GET", "POST"])
 def recipe_details(recipe_id):
@@ -144,6 +174,16 @@ def recipe_details(recipe_id):
         return redirect(url_for("recipes"))
     form = SaveRecipeForm()
     review_form = ReviewForm()
+    if review_form.validate_on_submit():
+        # Save the review
+        dbHandler.add_review(
+            session["username"],
+            recipe_id,
+            review_form.review.data,
+            review_form.rating.data
+        )
+        flash("Review posted!", "success")
+        return redirect(url_for("recipe_details", recipe_id=recipe_id))
     reviews = dbHandler.get_reviews_for_recipe(recipe_id)
     return render_template(
         "recipe_detail.html",
@@ -152,6 +192,28 @@ def recipe_details(recipe_id):
         review_form=review_form,
         reviews=reviews
     )
+
+@app.route("/save_recipe/<int:recipe_id>", methods=["POST"])
+def save_recipe(recipe_id):
+    if "username" not in session:
+        return redirect(url_for("login"))
+    recipe = get_recipe_details(recipe_id)
+    if recipe:
+        dbHandler.save_recipe(session["username"], recipe_id, recipe.get("title", ""), recipe.get("image", ""))
+        flash("Recipe saved successfully!", "success")
+    return redirect(url_for("saved_recipes"))
+
+@app.route("/saved_recipes")
+def saved_recipes():
+    if "username" not in session:
+        return redirect(url_for("login"))
+    recipes = dbHandler.get_saved_recipes(session["username"])
+    return render_template("savedrecipes.html", recipes=recipes)
+
+@app.route("/all_saved_recipes")
+def all_saved_recipes():
+    recipes = dbHandler.get_all_saved_recipes()
+    return render_template("all_saved_recipes.html", recipes=recipes)
 
 @app.route("/privacy.html", methods=["GET"])
 def privacy():
@@ -162,6 +224,7 @@ def logout():
     session.pop("username", None)
     session.pop("user_id", None)
     session.pop("two_factor_enabled", None)
+    session.pop("dark_mode", None)  # <-- Add this line
     return redirect("/login.html")
 
 @app.route("/csp_report", methods=["POST"])
@@ -217,86 +280,20 @@ def recipes():
     form = RecipeSuggestionForm()
     recipes = []
     weather = None
-    query = ""
+    queries = []
     if form.validate_on_submit():
         dietary = form.dietary.data
         weather = get_weather(user["location"])
         temp = weather["main"]["temp"] if weather else None
         if temp is not None:
-            query = get_weather_based_query(temp)
-        recipes = get_recipes(query, dietary)
-    return render_template("recipes.html", form=form, recipes=recipes, weather=weather, query=query)
+            queries = get_weather_based_query(temp, n=3)  # Get 3 random dish types
+            for query in queries:
+                found = get_recipes(query, dietary)
+                if found:
+                    recipes.extend(found)
+    return render_template("recipes.html", form=form, recipes=recipes, weather=weather, queries=queries)
 
-<<<<<<< HEAD
-@app.route("/recipe_details/<int:recipe_id>")
-def recipe_details(recipe_id):
-=======
-@app.route("/edit_profile", methods=["GET", "POST"])
-def edit_profile():
-    if "username" not in session or not session.get("twoFA_verified"):
-        return redirect(url_for("login"))
-    user = dbHandler.getUserByUsername(session["username"])
-    form = EditProfileForm()
-    if request.method == "POST" and form.validate_on_submit():
-        email = form.email.data or user["email"]
-        password = form.password.data if form.password.data else None
-        location = form.location.data or user["location"]
-        dbHandler.edit_user(user["username"], email=email, password=password, location=location)
-        flash("Profile updated successfully", "success")
-        return redirect(url_for("dashboard"))
-    form.email.data = user["email"]
-    form.location.data = user["location"]
-    return render_template("edit_profile.html", form=form)
 
-@app.route("/recipe/<int:recipe_id>", methods=["GET", "POST"])
-def recipe_detail(recipe_id):
-    if "username" not in session:
-        return redirect(url_for("login"))
->>>>>>> f017e3d (sprint 0.2 completed)
-    recipe = get_recipe_details(recipe_id)
-    if not recipe:
-        flash("Recipe not found.", "danger")
-        return redirect(url_for("recipes"))
-<<<<<<< HEAD
-    return render_template("recipe_detail.html", recipe=recipe)
-=======
-    form = SaveRecipeForm()
-    review_form = ReviewForm()
-    reviews = dbHandler.get_reviews_for_recipe(recipe_id)
-    if review_form.validate_on_submit():
-        dbHandler.add_review(session["username"], recipe_id, review_form.review.data, review_form.rating.data)
-        flash("Review posted!", "success")
-        return redirect(url_for("recipe_detail", recipe_id=recipe_id))
-    return render_template("recipe_detail.html", recipe=recipe, form=form, review_form=review_form, reviews=reviews)
-
-@app.route("/save_recipe/<int:recipe_id>", methods=["POST"])
-def save_recipe(recipe_id):
-    if "username" not in session:
-        return redirect(url_for("login"))
-    recipe = get_recipe_details(recipe_id)
-    if recipe:
-        dbHandler.save_recipe(session["username"], recipe_id, recipe.get("title", ""), recipe.get("image", ""))
-        flash("Recipe saved successfully!", "success")
-    return redirect(url_for("saved_recipes"))
-
-@app.route("/saved_recipes")
-def saved_recipes():
-    if "username" not in session:
-        return redirect(url_for("login"))
-    recipes = dbHandler.get_saved_recipes(session["username"])
-    return render_template("savedrecipes.html", recipes=recipes)
-
-@app.route("/all_saved_recipes")
-def all_saved_recipes():
-    recipes = dbHandler.get_all_saved_recipes()
-    return render_template("all_saved_recipes.html", recipes=recipes)
-##@app.route("/makereview", methods = ["GET", "POST"])
-##def makereview():
-    ##if "username" not in session:
-        ##return redirect (url_for("login"))
-    
-##@app.route("/savedrecipes", methods = ["GET"])
->>>>>>> f017e3d (sprint 0.2 completed)
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)
